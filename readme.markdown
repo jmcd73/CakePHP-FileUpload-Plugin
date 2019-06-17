@@ -39,7 +39,7 @@ Using the above as form fields create database fields for each form field:
 ```
 $uploadDir = Configure::read('GLABELS_ROOT');
 ```
-* If the beforeSave is an edit the and name of the upload file changes the old file is deleted
+* If the save is an edit the and the name of the upload file changes the old file is deleted
 
 # INSTALL
 
