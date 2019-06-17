@@ -24,6 +24,7 @@ var $actsAs = [
 ```
 
 Using the above as form fields create database fields for each form field:
+
 | db field name |     DB Format   |       Description                     |
 |---------------|-----------------|---------------------------------------|
 | file_template |  VARCHAR(200)  | the string name of the uploaded file  |
