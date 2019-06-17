@@ -7,21 +7,25 @@
 # CHANGES
 * Specify multiple upload fields from the one form
 ```
-
-'uploadFormFields' => [
-            'file_template',
-            'example_image'
-        ],
+// in model
+var $actsAs = [
+				'FileUpload.FileUpload' => [
+					// ... other settings
+					'uploadFormFields' => [
+           				'file_template',
+           				'example_image'
+       				],
+					// ... other settings
+				]
+]
 ```
-Using the above as form fields database fields are then
-file_template (the string name of the uploaded file)
-file_template_size (the size of the uploaded file)
-file_template_type ( the browser detected type of the file )
+Using the above as form fields create database fields for each form field:
+file_template ( VARCHAR(200) the string name of the uploaded file)
+file_template_size ( INT(11) the size of the uploaded file)
+file_template_type ( VARCHAR(40) the browser detected type of the file )
 example_image
 example_image_size
 example_image_type
-
-You need to add the uploadFormFields to the database table
 
 * uploadDir is read using Configure in the setUp() function in the behaviour
 ```
