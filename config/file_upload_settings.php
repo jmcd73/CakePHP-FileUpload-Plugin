@@ -106,8 +106,8 @@ class FileUploadSettings
             'jpg' => ['image/jpeg', 'image/pjpeg'],
             'jpeg' => ['image/jpeg', 'image/pjpeg'],
             'gif' => ['image/gif'],
-			'png' => ['image/png', 'image/x-png'],
-			'glabels' => [ ['application/x-gzip', 'application/octet-stream']
+            'png' => ['image/png', 'image/x-png'],
+            'glabels' => ['application/x-gzip', 'application/octet-stream']
         ],
 
         /**
@@ -175,14 +175,21 @@ class FileUploadSettings
          * This is the array submitted by CakePHP when an input is of type => file
          * this array to make sure it is an upload field
          * (
-        [name] => Screen Shot 2019-06-17 at 11.01.46 am.png
-        [type] => image/png
-        [tmp_name] => /tmp/phpE38X0E
-        [error] => 0
-        [size] => 824907
-        )
+         * [name] => Screen Shot 2019-06-17 at 11.01.46 am.png
+         * [type] => image/png
+         * [tmp_name] => /tmp/phpE38X0E
+         * [error] => 0
+         * [size] => 824907
+         * )
          */
-        'uploadFieldKeys' => ['name', 'type', 'tmp_name', 'error', 'size'],
+
+        'uploadFieldKeys' => [
+            'name',
+            'type',
+            'tmp_name',
+            'error',
+            'size'
+        ],
         /**
          * Behavior Setting Only.
          *
