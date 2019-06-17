@@ -4,47 +4,41 @@
 * EMAIL: nick@webtechnick.com
 * BLOG ARTICLE: <http://www.webtechnick.com/blogs/view/221/CakePHP_File_Upload_Plugin>
 
+# CHANGES
+* Specify multiple upload fields from the one form
+```
+
+'uploadFormFields' => [
+            'file_template',
+            'example_image'
+        ],
+```
+Using the above as form fields database fields are then
+file_template (the string name of the uploaded file)
+file_template_size (the size of the uploaded file)
+file_template_type ( the browser detected type of the file )
+example_image
+example_image_size
+example_image_type
+
+You need to add the uploadFormFields to the database table
+
+* uploadDir is read using Configure in the setUp() function in the behaviour
+```
+$uploadDir = Configure::read('GLABELS_ROOT');
+```
+
 # INSTALL
 
-clone into your `app/plugins/file_upload` directory
-	
-	git clone git://github.com/webtechnick/CakePHP-FileUpload-Plugin.git app/plugins/file_upload
-
+clone into your `app/Plugins/FileUpload` directory
+```
+	cd app/Plugins
+	git clone git://github.com/jmcd73/CakePHP-FileUpload-Plugin.git FileUpload
+```
 
 # CHANGELOG:
-* 6.1.1: Fixed a bug that would not display an image if the source image is the same width as the resize image requested. 
-* 6.1.0: Allow users to change the uploadDir outside of WEB_ROOT by changing setting forceWebroot to false in the configuration. Default is still webroot/files.  Updated typos in the README.txt
-* 6.0.0: Change the way file uploads types are checked.  Now checking extension along with filetypes. *Please read migration guide.  migration_guide_5_0_x_to_6_0_x.txt*
-* 5.0.1: Fixed a bug that would continue a file upload if the fileName returned false after a filename callback.
-* 5.0.0: Major release tag
-* 4.4.0: Added new fileName maniupluation callbacks and settings.
-* 4.3.0: Added a new 'maxFileSize' validation key.
-* 4.2.0: Added a new 'required' key in Behavior settings that would produce a validation error if a file wasn't uploaded.
-* 4.1.2: Fixed a regression,  passing in custom settings to the helper now changes those settings.
-* 4.1.1: Bug fix displaying correct image path for Windows Servers.
-* 4.1.0: Added validation errors for the behavior.  If an error is accurded durring an upload a validation error is thrown and presented to the user.
-* 4.0.4: Bug fix, Undefined index notice within same controller on different form without an upload at all.
-* 4.0.3: Bug fix, using wrong option in removeFile method.
-* 4.0.2: Bug fix, uploading non-model files now returns proper array of files to be uploaded.
-* 4.0.1: Bug fix, setting false values into the global settings now works again, errors in uploader translate to component errors.
-* 4.0: Massive update, refactoring, new behavior, new configuration file.
-* 3.6.3 Bug fix; assigning multiple columns to upload model key, doesn't test to make sure it's a file (regression fixed).
-* 3.6.2 Bug fixes, multiple fileupload issue with finalFiles
-* 3.6.1 Bug fixes (for non model users)
-* 3.6: Added massSave associative array save support.
-* 3.5: Added multi file support. (API changes: $uploadId now depreciated, use $uploadIds[0] instead.  $finalFile now depreciated, use $finalFiles[0] instead.)
-* 3.0: Converted Component and Helper into a plugin for easy management between projects
-* 2.0.1: Bug Fixes
-* 2.0: Release of FileUploadHelper
-* 1.7: Added detailed errors to FileUploadComponent
-* 1.6: Bug Fixes
-* 1.5: Bug Fixes
-* 1.4: Added toggle to allow for auto processFile or not. 
-* 1.3: Bug Fixes
-* 1.2: Bug Fixes
-* 1.1: Converted to cakePHP naming conventions and standards
-* 1.0: Initial Release
 
+see https://github.com/webtechnick/CakePHP-FileUpload-Plugin
 
 # SETUP AND BASIC CONFIGURATIONS
 There are two ways to setup the this plugin.  Number one, you can use the Behavior + Helper method.
@@ -54,9 +48,9 @@ automatically, including multiple file uploads and associations.
 
 
 # BEHAVIOR CONFIGURATION (RECOMMENDED)
-The behavior configuration is the recommened way to handle file uploads. Your table will need to have three columns in it (`name`, `type`, and `size`).  Then handling uploads is as simple as attaching the behavior to your model.
+The behavior configuration is the recommened way to handle file uploads. Your database table will need to have three columns in it (`name`, `type`, and `size`).  Then handling uploads is as simple as attaching the behavior to your model.
 
-Review `file_upload/config/sql/upload.php` for a schema file to work into your database
+Review `FileUpload/config/sql/upload.php` for a schema file to work into your database
 
 ## Model Setup
 Simply attach the FileUpload.FileUpload behavior to the model of your choice.
@@ -147,30 +141,30 @@ You'll need to add the `FileUpload.FileUpload` in both the components and helper
 
 Upon submitting a file the FileUpload Component will automatically search for your uploaded file, verify its of the proper type set by `$this->FileUpload->allowedTypes():`
 
-		<?php 
+		<?php
 		function beforeFilter(){
 			parent::beforeFilter();
 			/* defaults to:
 			'jpg' => array('image/jpeg', 'image/pjpeg'),
-			'jpeg' => array('image/jpeg', 'image/pjpeg'), 
+			'jpeg' => array('image/jpeg', 'image/pjpeg'),
 			'gif' => array('image/gif'),
 			'png' => array('image/png','image/x-png'),*/
-			
+
 			$this->FileUpload->allowedTypes(array(
-				'jpg' => array('image/jpeg','image/pjpeg'), 
-				'txt', 
-				'gif', 
+				'jpg' => array('image/jpeg','image/pjpeg'),
+				'txt',
+				'gif',
 				'pdf' => array('application/pdf')
-			)); 
+			));
 		}
 		?>
 
 Then it will attempt to copy the file to your uploads directory set by `$this->FileUpload->uploadDir:`
-		<?php 
+		<?php
 		function beforeFilter(){
 			parent::beforeFilter();
 			//defaults to 'files', will be webroot/files, make sure webroot/files exists and is chmod 777
-			$this->FileUpload->uploadDir('files'); 
+			$this->FileUpload->uploadDir('files');
 		}
 		?>
 
@@ -179,7 +173,7 @@ Then it will attempt to copy the file to your uploads directory set by `$this->F
 You can use this Component with or without a model. It defaults to use the Upload model:
 
 		<?php
-		//app/models/upload.php 
+		//app/models/upload.php
 		class Upload extends AppModel{
 			var $name = 'Upload';
 		}
@@ -187,10 +181,10 @@ You can use this Component with or without a model. It defaults to use the Uploa
 
 ### SQL EXAMPLE IF YOUR USING A MODEL
 If you're using a Model, you'll need to have at least 3 fields to hold the uploaded data (`name`, `type`, `size`)
-		-- 
+		--
 		-- Table structure for table `uploads`
-		-- 
-		
+		--
+
 		CREATE TABLE IF NOT EXISTS `uploads` (
 			`id` int(11) unsigned NOT NULL auto_increment,
 			`name` varchar(200) NOT NULL,
@@ -207,7 +201,7 @@ Optionally, you can run the schema in a terminal like so:
 
 Default fields are name, type, and size; but you can change that at anytime using the `$this->FileUpload->fields = array();`
 
-		<?php 
+		<?php
 		function beforeFilter(){
 			parent::beforeFilter();
 			//fill with associated array of name, type, size to the corresponding column name
@@ -222,11 +216,11 @@ Example view WITH Model WITH Helper:
 
 #### Upload Multiple Files
 The new helper will do all the hard work for you, you can just output input multiple times to allow for more than one file to be uploaded at a time.
-		
+
 		<?php echo $fileUpload->input(); ?>
 		<?php echo $fileUpload->input(); ?>
 		<?php echo $fileUpload->input(); ?>
-		
+
 #### Example View WITH Model WITHOUT Helper:
 		<?php echo $form->input('file', array('type'=>'file')); ?>
 
@@ -242,7 +236,7 @@ Uploading Multiple Files
 ### WITHOUT MODEL CONFIGURATION
 
 If you wish to *NOT* use a model simply set `$this->FileUpload->fileModel(null);` in a beforeFilter.
-		<?php 
+		<?php
 			//in a controller
 			function beforeFilter(){
 				parent::beforeFilter();
@@ -255,7 +249,7 @@ If you wish to *NOT* use a model simply set `$this->FileUpload->fileModel(null);
 	<input type="file" name="file" />
 
 OR
-	
+
 	<?= $fileUpload->input(array('var' => 'file', 'model' => false)); ?>
 
 #### Multiple File Uploading
@@ -274,13 +268,13 @@ The helper will do all the work for you, just output input multiple times and th
 ## CONTROLLER EXAMPLES
 If a fileModel is given, it will attempt to save the record of the uploaded file to the database for later use. Upon success the FileComponent sets `$this->FileUpload->success` to TRUE; You can use this variable to test in your controller like so:
 
-		<?php 
+		<?php
 		class UploadsController extends AppController {
-		
+
 			var $name = 'Uploads';
 			var $helpers = array('Html', 'Form', 'FileUpload.FileUpload');
 			var $components = array('FileUpload.FileUpload');
-			
+
 			function admin_add() {
 				if(!empty($this->data)){
 					if($this->FileUpload->success){
@@ -294,13 +288,13 @@ If a fileModel is given, it will attempt to save the record of the uploaded file
 		?>
 
 At any time you can remove a file by using the `$this->FileUpload->removeFile($name);` function. An example of that being used might be in a controller:
-		<?php 
+		<?php
 		class UploadsController extends AppController {
-		
+
 			var $name = 'Uploads';
 			var $helpers = array('Html', 'Form', 'FileUpload.FileUpload');
 			var $components = array('FileUpload.FileUpload');
-			
+
 			function admin_delete($id = null) {
 				$upload = $this->Upload->findById($id);
 				if($this->FileUpload->removeFile($upload['Upload']['name'])){
