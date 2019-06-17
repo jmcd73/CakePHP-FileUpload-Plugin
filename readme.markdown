@@ -34,10 +34,15 @@ Using the above as form fields create database fields for each form field:
 | example_image_size |
 | example_image_type |
 
-* uploadDir is read using `Configure::read` in the setUp() function in the behaviour
+* uploadDir is not set in $actsAs but read using `Configure::read` in the setUp() function in the behavior
 
 ```
+// in app/Config/bootstrap.php or similar file
+Configure::write('GLABELS_ROOT', 'files/templates');
+
+// Read in the setUp() method in the FileUploadBehavior.php
 $uploadDir = Configure::read('GLABELS_ROOT');
+
 ```
 * Check if the save operation is an edit ($Model->id has a value) and if the name of the file has changed delete the old file while uploading the new one
 
