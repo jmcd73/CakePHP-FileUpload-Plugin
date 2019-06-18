@@ -173,7 +173,7 @@ class FileUploadSettings
 
         /**
          * This is the array submitted by CakePHP when an input is of type => file
-         * this array to make sure it is an upload field
+         * check for the keys in this array to make sure it is an upload field
          * (
          * [name] => Screen Shot 2019-06-17 at 11.01.46 am.png
          * [type] => image/png
