@@ -5,11 +5,15 @@
 - EMAIL: nick@webtechnick.com
 - BLOG ARTICLE: <http://www.webtechnick.com/blogs/view/221/CakePHP_File_Upload_Plugin>
 
+# About
+This is my changes to the CakePHP 2.x version of the FileUpload Plugin by Nick Baker.
+
 # CHANGES FROM ORIGINAL REPO
 
-- Specify multiple upload fields from the one form
 
-```
+- Specify multiple upload fields in the one form
+
+```php
 // in model
 var $actsAs = [
 	'FileUpload.FileUpload' => [
@@ -21,6 +25,10 @@ var $actsAs = [
 		// ... other settings
 	]
 ]
+
+// in view
+<?php echo $this->Form->input('file_template', [ 'type' => 'file' ]); ?>
+<?php echo $this->Form->input('example_image', [ 'type' => 'file' ]); ?>
 ```
 
 Using the above as form fields create database fields for each form field:
