@@ -62,8 +62,10 @@ class FileUploadBehavior extends ModelBehavior
             $options = [];
         }
         $this->options[$Model->alias] = array_merge($FileUploadSettings->defaults, $options);
-        // read from Configure::
-        $uploadDir = Configure::read('GLABELS_ROOT');
+		// read from Configure::
+		$setting = ClassRegistry::init('Setting');
+
+        $uploadDir = $setting->getSetting('GLABELS_ROOT');
 
         $uploader_settings = $this->options[$Model->alias];
         $uploader_settings['uploadDir'] = $this->options[$Model->alias]['forceWebroot'] ?
