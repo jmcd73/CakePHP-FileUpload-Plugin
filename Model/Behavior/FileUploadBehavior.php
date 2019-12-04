@@ -78,7 +78,7 @@ class FileUploadBehavior extends ModelBehavior
     /**
      * check multiple keys exist in an array
      */
-    public function array_keys_exists(array $keys, array $arr)
+    public function arrayKeysExists(array $keys, array $arr)
     {
         return !array_diff_key(array_flip($keys), $arr);
     }
@@ -90,7 +90,7 @@ class FileUploadBehavior extends ModelBehavior
     public function checkIsUploadField($arrayToCheck, $keysToCheckFor)
     {
         return is_array($arrayToCheck) &&
-        $this->array_keys_exists($keysToCheckFor, $arrayToCheck);
+        $this->arrayKeysExists($keysToCheckFor, $arrayToCheck);
     }
     /**
      * beforeSave if a file is found, upload it, and then save the filename according to the settings
